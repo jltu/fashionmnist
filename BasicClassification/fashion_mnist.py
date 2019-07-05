@@ -47,7 +47,9 @@ test_images = test_images / 255.0
 # plt.show()
 
 #################################################
+
 # Building the Model
+
 # Building the model with layers using Keras library functions
 model = keras.Sequential([
     keras.layers.Flatten(input_shape=(28, 28)),  # flattens 2d array of 28x28 px into 1d array of 28*28=784
@@ -56,30 +58,64 @@ model = keras.Sequential([
 ])
 
 #################################################
+
 # Compiling the the Model for training
+
 model.compile(optimizer='adam',  # how the model is updated based on the data it sees and loss fn
               loss='sparse_categorical_crossentropy',  # measures how accurate the model is during training
               metrics=['accuracy'])  # monitor the training and testing steps
 
 #################################################
+
 # Training the Model
+
 # Training the neural networks requires the following steps:
 #     1. Feed the training data to the model, which in our case is the train_images and train_labels
 #     2. The models learns to associate images and train_labels
 #     3. We ask the model to make predictions about a test set, which in our case the test_images array. We
 #         verify that the predictions match the labels from the test_labels array
-model.fit(train_images, train_labels, epochs=5)
+history = model.fit(train_images, train_labels, epochs=5)
+
+
+# Plot loss value vs epochs
+# loss_values = history.history['loss']
+# epochs = range(1, len(loss_values)+1)
+#
+# plt.plot(epochs, loss_values, label='Training Loss')
+# plt.xlabel('Epochs')
+# plt.ylabel('Loss')
+# plt.legend()
+#
+# plt.show()
+
 
 #################################################
+
 # Evaluate Accuracy
+
 # Compare how the model performs on the test dataset
 test_loss, test_acc = model.evaluate(test_images, test_labels)
+
+# Plot Acc vs epochs
+# test_acc = history.history['acc']
+# epochs = range(1, len(test_acc)+1)
+#
+# plt.plot(epochs, test_acc, label='Training Acc')
+# plt.xlabel('Epochs')
+# plt.ylabel('Acc')
+# plt.legend()
+#
+# plt.show()
+
 print('Test Accuracy:', test_acc)
 # The acc on the test dataset is less than on the training set, this is an example of OVERFITTING. Overfitting is when
 # a machine learning model performs worse on new data than on their training data.
 
+
 #################################################
+
 # Make Predictions
+
 predictions = model.predict(test_images)  # array of 10 numbers, describes "confidence" of the model
 print(predictions[0])  # higher the number, more confident of its decision
 print('Prediction:', np.argmax(predictions[0]))  # confident that this image is an ankle boot or class_names[9]
